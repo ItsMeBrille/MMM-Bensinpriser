@@ -8,7 +8,9 @@ Module.register("MMM-Bensinpriser", {
     },
     numberOfStations: 3, // Number of gas stations to show
     updateInterval: 60, // Update interval in seconds
-    fuelTypes: ["95", "D"] // The fuel types you want to display (95, 98, D or FD)
+    fuelTypes: ["95", "D"], // The fuel types you want to display (95, 98, D or FD)
+    decimalSeparator: "." // You can set it to "." or ","
+
   },
 
   start: function() {
@@ -97,13 +99,13 @@ Module.register("MMM-Bensinpriser", {
     table.className = "fuel-price-table";
   
     const headerRow = document.createElement("tr");
-    headerRow.innerHTML = `<th>Station</th>${this.config.fuelTypes.map(type => `<th>${type}</th>`).join("")}`;
+    headerRow.innerHTML = `<th></th><th>Station</th>${this.config.fuelTypes.map(type => `<th>${type}</th>`).join("")}`;
     table.appendChild(headerRow);
   
     for (const station of stations) {
       const stationRow = document.createElement("tr");
       const stationName = station.name + (station.extras?.facilities?.airPump ? " &#9889;" : ""); // Add marker if there are power outlets at the given station
-      stationRow.innerHTML = `<td>${stationName}</td>${this.config.fuelTypes.map(type => this.getPriceCell(station, type)).join("")}`;
+      stationRow.innerHTML = `<td><img class="station-icon" src="${station.pictureUrl}"></td><td>${stationName}</td>${this.config.fuelTypes.map(type => this.getPriceCell(station, type)).join("")}`;
       table.appendChild(stationRow);
     }
   
@@ -115,8 +117,11 @@ Module.register("MMM-Bensinpriser", {
   
   getPriceCell: function(station, type) {
     const fuelTypeDetails = station.stationDetails.find(detail => detail.type === type);
-    return `<td>${fuelTypeDetails ? `${fuelTypeDetails.price},-` : "N/A"}</td>`;
-  },   
+    const decimalSeparator = this.config.decimalSeparator; // Get the configured decimal separator
+    const priceFormatted = fuelTypeDetails ? `${fuelTypeDetails.price.toFixed(2).replace(".", decimalSeparator)} kr` : "N/A";
+    return `<td>${priceFormatted}</td>`;
+  },
+  
 
   loadLanguageJSON: function(language) {
     const self = this;
@@ -138,6 +143,10 @@ Module.register("MMM-Bensinpriser", {
       return this.translateJSON[key];
     }
     return key;
+  },
+
+  getStyles: function() {
+    return ["MMM-Bensinpriser.css"]; // Add your CSS file
   },
 
   getDom: function() {
