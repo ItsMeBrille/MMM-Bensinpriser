@@ -1,16 +1,23 @@
 Module.register("MMM-Bensinpriser", {
   defaults: {
     apiURL: "https://api.drivstoffappen.no/api/stations?stationType=0&countryCode=no",
-    apiKey: "YOUR_API_KEY", // No default value, will return unauthorized when not passed a valid key
+    apiKey: "YOUR_API_KEY",
     coordinates: {
       latitude: 59.910761,  // Defaults to Aker Brygge, Oslo
       longitude: 10.728128, // Defaults to Aker Brygge, Oslo
     },
-    numberOfStations: 5, // no. of stations shown in the table
+    numberOfStations: 5,
     updateInterval: 60000, // Update interval in milliseconds (1 minute)
   },
 
   start: function() {
+    this.wrapper = document.createElement("div");
+    this.wrapper.className = "fuel-price-wrapper";
+    this.content = document.createElement("div");
+    this.content.className = "fuel-price-content";
+
+    this.wrapper.appendChild(this.content);
+    this.loadLanguageJSON(config.language);
     this.loadData();
     this.scheduleUpdate();
   },
@@ -22,6 +29,8 @@ Module.register("MMM-Bensinpriser", {
     }, this.config.updateInterval);
   },
 
+  // ... other functions ...
+
   loadData: function() {
     const url = `${this.config.apiURL}`;
     const headers = {
@@ -30,96 +39,49 @@ Module.register("MMM-Bensinpriser", {
 
     const self = this;
     fetch(url, { headers })
-      .then(response => {
-        if (response.status === 401) {
-          self.updateDom(self.createWarning("Unauthorized. Check your API key."));
-          return;
-        }
-        return response.json();
-      })
+      .then(response => response.json())
       .then(data => {
-        if (!data) {
-          return; // Exit early if unauthorized
+        if (!data || data.statusCode === 401) {
+          self.content.innerHTML = self.translate("unauthorized");
+          return;
         }
         const sortedStations = self.sortStationsByDistance(data);
         const nearestStations = sortedStations.slice(0, self.config.numberOfStations);
-        console.log(self.createTable(nearestStations));
-        self.updateDom(self.createTable(nearestStations));
+        const table = self.createTable(nearestStations);
+        self.content.innerHTML = "";
+        self.content.appendChild(table);
       })
       .catch(error => {
         console.error("Error fetching data:", error);
-        self.updateDom(self.createWarning("Error fetching data."));
+        self.content.innerHTML = self.translate("errorFetching");
       });
   },
 
-  sortStationsByDistance: function(stations) {
-    const { latitude, longitude } = this.config.coordinates;
-
-    stations.forEach(station => {
-      const stationLatitude = parseFloat(station.latitude);
-      const stationLongitude = parseFloat(station.longitude);
-
-      const distance = this.calculateDistance(latitude, longitude, stationLatitude, stationLongitude);
-      station.distance = distance;
-    });
-
-    stations.sort((a, b) => a.distance - b.distance);
-
-    return stations;
+  loadLanguageJSON: function(language) {
+    const self = this;
+    const file = this.file(`translations/${language}.json`);
+    console.log(file);
+    const xhr = new XMLHttpRequest();
+    xhr.overrideMimeType("application/json");
+    xhr.open("GET", file, true);
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        self.translateJSON = JSON.parse(xhr.responseText);
+      }
+    };
+    xhr.send(null);
   },
 
-  calculateDistance: function(lat1, lon1, lat2, lon2) {
-    const R = 6371; // Earth's radius in kilometers
-    const dLat = this.deg2rad(lat2 - lat1);
-    const dLon = this.deg2rad(lon2 - lon1);
-    const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    const distance = R * c; // Distance in kilometers
-
-    return distance;
-  },
-
-  deg2rad: function(deg) {
-    return deg * (Math.PI / 180);
-  },
-
-  createTable: function(stations) {
-    const table = document.createElement("table");
-    table.className = "fuel-price-table";
-  
-    // Create table header
-    const headerRow = document.createElement("tr");
-    headerRow.innerHTML = `<th>${this.translate("stationHeader")}</th><th>${stations[0].stationDetails[0].type}</th>`;
-    table.appendChild(headerRow);
-  
-    // Create table rows for each station
-    for (const station of stations) {
-      const row = document.createElement("tr");
-      row.innerHTML = `<td>${station.name}</td><td>${station.stationDetails[0].price} Kr</td>`;
-      table.appendChild(row);
+  translate: function(key) {
+    if (this.translateJSON && this.translateJSON[key]) {
+      return this.translateJSON[key];
     }
-  
-    const wrapper = document.createElement("div");
-    wrapper.appendChild(table);
-  
-    return wrapper;
-  },
-  
-
-  createWarning: function(message) {
-    const warningElement = document.createElement("div");
-    warningElement.className = "warning";
-    warningElement.innerHTML = this.translate(message);
-    return warningElement;
-  },
-
-  getStyles: function() {
-    return ["MMM-Bensinpriser.css"]; // Add your CSS file
+    return key;
   },
 
   getDom: function() {
     return this.wrapper;
   },
+
+  // ... other functions ...
 });
