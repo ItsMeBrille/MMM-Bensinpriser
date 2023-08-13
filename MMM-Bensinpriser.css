@@ -1,28 +1,35 @@
 /* MMM-Bensinpriser.css */
 
+.station-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 20%;
+  text-align: center;
+  vertical-align: top;
+  margin-top: 8px;
+}
+
 .fuel-price-table {
-    width: 100%;
-    border-collapse: collapse;
-    border: 2px solid #ccc;
-    margin-top: 10px;
-  }
-  
-  .fuel-price-table th, .fuel-price-table td {
-    padding: 8px;
-    text-align: left;
-    border-bottom: 1px solid #ccc;
-  }
-  
-  .fuel-price-table th {
-    background-color: #f2f2f2;
-    font-weight: bold;
-  }
-  
-  .fuel-price-table tr:nth-child(even) {
-    background-color: #f2f2f2;
-  }
-  
-  .fuel-price-table tr:hover {
-    background-color: #ddd;
-  }
-  
+  border-collapse: collapse;
+}
+
+.fuel-price-table th, .fuel-price-table td {
+  padding-left: 8px;
+  padding-right: 8px;
+  border: 1px solid #ddd;
+  text-align: left;
+  height: 10px;
+}
+
+.fuel-price-table th {
+  font-size: 0.8em;
+}
+
+.fuel-price-table td {
+  font-size: 0.6em;
+}
+
+.fuel-price-table tr:first-child td, .fuel-price-table tr:first-child th { border-top: 0; }
+.fuel-price-table tr td:first-child, .fuel-price-table tr th:first-child { border-left: 0; }
+.fuel-price-table tr:last-child td, .fuel-price-table tr:last-child th { border-bottom: 0; }
+.fuel-price-table tr td:last-child, .fuel-price-table tr th:last-child { border-right: 0; }
