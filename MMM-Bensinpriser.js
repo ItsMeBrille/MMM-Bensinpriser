@@ -43,6 +43,7 @@ Module.register("MMM-Bensinpriser", {
         }
         const sortedStations = self.sortStationsByDistance(data);
         const nearestStations = sortedStations.slice(0, self.config.numberOfStations);
+        console.log(self.createTable(nearestStations));
         self.updateDom(self.createTable(nearestStations));
       })
       .catch(error => {
@@ -87,23 +88,30 @@ Module.register("MMM-Bensinpriser", {
   createTable: function(stations) {
     const table = document.createElement("table");
     table.className = "fuel-price-table";
-
+  
+    // Create table header
+    const headerRow = document.createElement("tr");
+    headerRow.innerHTML = `<th>${this.translate("stationHeader")}</th><th>${stations[0].stationDetails[0].type}</th>`;
+    table.appendChild(headerRow);
+  
+    // Create table rows for each station
     for (const station of stations) {
       const row = document.createElement("tr");
       row.innerHTML = `<td>${station.name}</td><td>${station.stationDetails[0].price} Kr</td>`;
       table.appendChild(row);
     }
-
+  
     const wrapper = document.createElement("div");
     wrapper.appendChild(table);
-
+  
     return wrapper;
   },
+  
 
   createWarning: function(message) {
     const warningElement = document.createElement("div");
     warningElement.className = "warning";
-    warningElement.innerHTML = message;
+    warningElement.innerHTML = this.translate(message);
     return warningElement;
   },
 

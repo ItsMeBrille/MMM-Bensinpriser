@@ -1,0 +1,6 @@
+{
+  "unauthorized": "Uautorisert. Sjekk API-nøkkelen din.",
+  "errorFetching": "Feil ved henting av data.",
+  "stationHeader": "Stasjon",
+  "priceHeader": "Pris"
+}

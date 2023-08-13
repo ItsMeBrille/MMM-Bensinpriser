@@ -1,0 +1,6 @@
+{
+  "unauthorized": "Unauthorized. Check your API key.",
+  "errorFetching": "Error fetching data.",
+  "stationHeader": "Station",
+  "priceHeader": "Price"
+}
