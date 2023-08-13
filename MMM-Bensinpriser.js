@@ -6,8 +6,9 @@ Module.register("MMM-Bensinpriser", {
       latitude: 59.916952,  // Latitude of your location
       longitude: 10.728125, // Longitude of your location, defaults to Oslo
     },
-    numberOfStations: 5, // Number of gas stations to show
+    numberOfStations: 3, // Number of gas stations to show
     updateInterval: 60, // Update interval in seconds
+    fuelTypes: ["95", "D"] // The fuel types you want to display (95, 98, D or FD)
   },
 
   start: function() {
@@ -94,24 +95,28 @@ Module.register("MMM-Bensinpriser", {
   createTable: function(stations) {
     const table = document.createElement("table");
     table.className = "fuel-price-table";
-   
-    // Create table header
+  
     const headerRow = document.createElement("tr");
-    headerRow.innerHTML = `<th>${this.translate("stationHeader")}</th><th>${stations[0].stationDetails[0].type}</th>`;
+    headerRow.innerHTML = `<th>Station</th>${this.config.fuelTypes.map(type => `<th>${type}</th>`).join("")}`;
     table.appendChild(headerRow);
-    
-    // Create table rows for each station
+  
     for (const station of stations) {
-      const row = document.createElement("tr");
-      row.innerHTML = `<td>${station.name}</td><td>${station.stationDetails[0].price},-</td>`;
-      table.appendChild(row);
+      const stationRow = document.createElement("tr");
+      const stationName = station.name + (station.extras?.facilities?.airPump ? " &#9889;" : ""); // Add marker if there are power outlets at the given station
+      stationRow.innerHTML = `<td>${stationName}</td>${this.config.fuelTypes.map(type => this.getPriceCell(station, type)).join("")}`;
+      table.appendChild(stationRow);
     }
   
     const wrapper = document.createElement("div");
     wrapper.appendChild(table);
   
     return wrapper;
-  },  
+  },
+  
+  getPriceCell: function(station, type) {
+    const fuelTypeDetails = station.stationDetails.find(detail => detail.type === type);
+    return `<td>${fuelTypeDetails ? `${fuelTypeDetails.price},-` : "N/A"}</td>`;
+  },   
 
   loadLanguageJSON: function(language) {
     const self = this;
