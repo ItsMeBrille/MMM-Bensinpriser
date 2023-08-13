@@ -1,6 +1,6 @@
 # MMM-Bensinpriser
 
-MMM-Bensinpriser is a MagicMirror² module that displays fuel prices for the nearest gas stations based on your specified coordinates.
+MMM-Bensinpriser is a MagicMirror² module that displays fuel prices for your nearest gas stations in Norway.
 
 ## Installation
 
@@ -45,13 +45,8 @@ Replace `YOUR_API_KEY` with your API key for the fuel price data.
 The module will display a table with fuel prices for the nearest gas stations based on the specified coordinates. The table will update at the configured interval.
 
 ## Dependencies
-
 * MagicMirror² (not tested on versions below 2.12.0)
 
 ## License
-
-MMM-Bensinpriser is licensed under the [MIT License](LICENSE).
+MMM-Keypress is licensed under the [MIT License](LICENSE).
 The MIT License (MIT)
-```
-
-Please make sure to replace `YOUR_API_KEY`, `your-username`, and any other placeholders with appropriate values and information specific to your project.
