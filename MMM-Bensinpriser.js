@@ -2,12 +2,12 @@ Module.register("MMM-Bensinpriser", {
   defaults: {
     apiURL: "https://api.drivstoffappen.no/api/stations?stationType=0&countryCode=no",
     apiKey: "YOUR_API_KEY",
-    coordinates: {
-      latitude: 59.910761,  // Defaults to Aker Brygge, Oslo
-      longitude: 10.728128, // Defaults to Aker Brygge, Oslo
+    coordinates: { // Defaults to The Royal Palace in Oslo
+      latitude: 59.916952,  // Latitude of your location
+      longitude: 10.728125, // Longitude of your location, defaults to Oslo
     },
-    numberOfStations: 5,
-    updateInterval: 60000, // Update interval in milliseconds (1 minute)
+    numberOfStations: 5, // Number of gas stations to show
+    updateInterval: 60, // Update interval in seconds
   },
 
   start: function() {
@@ -26,7 +26,7 @@ Module.register("MMM-Bensinpriser", {
     const self = this;
     setInterval(function() {
       self.loadData();
-    }, this.config.updateInterval);
+    }, this.config.updateInterval*1000);
   },
 
   // ... other functions ...
@@ -57,6 +57,62 @@ Module.register("MMM-Bensinpriser", {
       });
   },
 
+
+  sortStationsByDistance: function(stations) {
+    const { latitude, longitude } = this.config.coordinates;
+  
+    stations.forEach(station => {
+      const stationLatitude = parseFloat(station.latitude);
+      const stationLongitude = parseFloat(station.longitude);
+  
+      const distance = this.calculateDistance(latitude, longitude, stationLatitude, stationLongitude);
+      station.distance = distance;
+    });
+  
+    stations.sort((a, b) => a.distance - b.distance);
+  
+    return stations;
+  },
+  
+  calculateDistance: function(lat1, lon1, lat2, lon2) {
+    const R = 6371; // Earth's radius in kilometers
+    const dLat = this.deg2rad(lat2 - lat1);
+    const dLon = this.deg2rad(lon2 - lon1);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = R * c; // Distance in kilometers
+
+    return distance;
+  },
+
+  deg2rad: function(deg) {
+    return deg * (Math.PI / 180);
+  },
+
+  createTable: function(stations) {
+    const table = document.createElement("table");
+    table.className = "fuel-price-table";
+   
+    // Create table header
+    const headerRow = document.createElement("tr");
+    headerRow.innerHTML = `<th>${this.translate("stationHeader")}</th><th>${stations[0].stationDetails[0].type}</th>`;
+    table.appendChild(headerRow);
+    
+    // Create table rows for each station
+    for (const station of stations) {
+      const row = document.createElement("tr");
+      row.innerHTML = `<td>${station.name}</td><td>${station.stationDetails[0].price},-</td>`;
+      table.appendChild(row);
+    }
+  
+    const wrapper = document.createElement("div");
+    wrapper.appendChild(table);
+  
+    return wrapper;
+  },  
+
   loadLanguageJSON: function(language) {
     const self = this;
     const file = this.file(`translations/${language}.json`);
@@ -64,7 +120,7 @@ Module.register("MMM-Bensinpriser", {
     const xhr = new XMLHttpRequest();
     xhr.overrideMimeType("application/json");
     xhr.open("GET", file, true);
-    xhr.onreadystatechange = function() {
+    xhr.onreadystatechange = function(){
       if (xhr.readyState === 4 && xhr.status === 200) {
         self.translateJSON = JSON.parse(xhr.responseText);
       }
@@ -83,5 +139,4 @@ Module.register("MMM-Bensinpriser", {
     return this.wrapper;
   },
 
-  // ... other functions ...
 });
