@@ -33,7 +33,7 @@ To use MMM-Bensinpriser, add it to the `modules` array in the `config/config.js`
   }
 },
 ```
-Replace `YOUR_API_KEY` with your API key for the fuel price data.
+Replace `YOUR_API_KEY` with your API key for the fuel price data, or use the one provided.
 
 ## Usage
 The module will display a table with fuel prices for the nearest gas stations based on the specified coordinates. The table will update at the configured interval.
