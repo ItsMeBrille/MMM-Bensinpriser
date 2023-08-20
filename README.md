@@ -27,7 +27,7 @@ To use MMM-Bensinpriser, add it to the `modules` array in the `config/config.js`
       longitude: 10.382726, // Aker Brygge longitude, Oslo
     },
     numberOfStations: 3,
-    updateInterval: 60, // Update interval in milliseconds (e.g., 1 minute)
+    updateInterval: 60, // Update interval in seconds (e.g., 1 minute)
     fuelTypes: ["95", "D"], // Add the fuel types you want to display
     decimalSeparator: "." // You can set it to "." or ","
   }
