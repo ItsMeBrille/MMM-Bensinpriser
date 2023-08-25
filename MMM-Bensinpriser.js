@@ -105,7 +105,7 @@ Module.register("MMM-Bensinpriser", {
   
     for (const station of stations) {
       const stationRow = document.createElement("tr");
-      const stationName = station.name + (station.extras?.facilities?.airPump ? " &#9889;" : ""); // Add marker if there are power outlets at the given station
+      const stationName = station.name + (station.extras?.facilities?.airPump ? " &#9889;" : ""); // Add marker if there are airpumps at the given station
       stationRow.innerHTML = `<td><img class="station-icon" src="${station.pictureUrl}"></td><td>${stationName}</td>${this.config.fuelTypes.map(type => this.getPriceCell(station, type)).join("")}`;
       table.appendChild(stationRow);
     }
@@ -119,7 +119,7 @@ Module.register("MMM-Bensinpriser", {
   getPriceCell: function(station, type) {
     const fuelTypeDetails = station.stationDetails.find(detail => detail.type === type);
     const decimalSeparator = this.config.decimalSeparator; // Get the configured decimal separator
-    const priceFormatted = fuelTypeDetails ? `${fuelTypeDetails.price.toFixed(2).replace(".", decimalSeparator)} kr` : "N/A";
+    const priceFormatted = fuelTypeDetails ? `${fuelTypeDetails.price.toFixed(2).replace(".", decimalSeparator)} kr` : "";
     return `<td>${priceFormatted}</td>`;
   },
   
