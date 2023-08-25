@@ -95,11 +95,12 @@ Module.register("MMM-Bensinpriser", {
   },
 
   createTable: function(stations) {
+    const self = this;
     const table = document.createElement("table");
     table.className = "fuel-price-table";
   
     const headerRow = document.createElement("tr");
-    headerRow.innerHTML = `<th></th><th>Station</th>${this.config.fuelTypes.map(type => `<th>${type}</th>`).join("")}`;
+    headerRow.innerHTML = `<th></th><th>${self.translate("stationHeader")}</th>${this.config.fuelTypes.map(type => `<th>${type}</th>`).join("")}`;
     table.appendChild(headerRow);
   
     for (const station of stations) {
