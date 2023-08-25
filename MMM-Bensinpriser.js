@@ -7,7 +7,7 @@ Module.register("MMM-Bensinpriser", {
       longitude: 10.728125, // Longitude of your location, defaults to Oslo
     },
     numberOfStations: 3, // Number of gas stations to show
-    updateInterval: 60, // Update interval in seconds
+    updateInterval: 180, // Update interval in minutes (default 3 hours)
     fuelTypes: ["95", "D"], // The fuel types you want to display (95, 98, D or FD)
     decimalSeparator: "." // You can set it to "." or ","
 
@@ -29,7 +29,7 @@ Module.register("MMM-Bensinpriser", {
     const self = this;
     setInterval(function() {
       self.loadData();
-    }, this.config.updateInterval*1000);
+    }, this.config.updateInterval*60000);
   },
 
   // ... other functions ...
