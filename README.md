@@ -17,8 +17,8 @@ To use MMM-Bensinpriser, add it to the `modules` array in the `config/config.js`
   config: {
     apiKey: "24ACBFDD74F54688B46D425104009AD9FC48CEBC-A",
     coordinates: {
-      latitude: 61.151011, // Aker Brygge latitude, Oslo
-      longitude: 10.382726, // Aker Brygge longitude, Oslo
+      latitude: 59.910981, // Aker Brygge latitude, Oslo
+      longitude: 10.727169, // Aker Brygge longitude, Oslo
     },
     numberOfStations: 3,
     updateInterval: 180, // Update interval in minutes
