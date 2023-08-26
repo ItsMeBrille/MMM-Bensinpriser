@@ -8,12 +8,6 @@ MMM-Bensinpriser is a MagicMirror² module that displays fuel prices for your ne
    git clone https://github.com/ItsMeBrille/MMM-Bensinpriser.git
    ```
 
-2. Install the required dependencies:
-   ```shell
-   cd MMM-Bensinpriser
-   npm install
-   ```
-
 ## Configuration
 To use MMM-Bensinpriser, add it to the `modules` array in the `config/config.js` file of your MagicMirror installation:
 ```javascript
