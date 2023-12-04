@@ -2,9 +2,9 @@ Module.register("MMM-Bensinpriser", {
   defaults: {
     apiURL: "https://api.drivstoffappen.no/api/stations?stationType=0&countryCode=no",
     apiKey: "YOUR_API_KEY",
-    coordinates: { // Defaults to The Royal Palace in Oslo
-      latitude: 59.916952,  // Latitude of your location
-      longitude: 10.728125, // Longitude of your location, defaults to Oslo
+    coordinates: {
+      latitude: 59.910981, // Aker Brygge latitude, Oslo
+      longitude: 10.727169, // Aker Brygge longitude, Oslo
     },
     numberOfStations: 3, // Number of gas stations to show
     updateInterval: 180, // Update interval in minutes (default 3 hours)
