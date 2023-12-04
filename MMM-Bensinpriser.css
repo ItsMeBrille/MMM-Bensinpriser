@@ -33,3 +33,10 @@
 .fuel-price-table tr td:first-child, .fuel-price-table tr th:first-child { border-left: 0; }
 .fuel-price-table tr:last-child td, .fuel-price-table tr:last-child th { border-bottom: 0; }
 .fuel-price-table tr td:last-child, .fuel-price-table tr th:last-child { border-right: 0; }
+
+.fuel-last-updated{
+  margin: 0px;
+  line-height: 1.4em;
+  font-size: 0.5em;
+  color: #666;
+}
