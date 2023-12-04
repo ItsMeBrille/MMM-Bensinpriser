@@ -123,7 +123,7 @@ Module.register("MMM-Bensinpriser", {
     const seconds = Math.floor((new Date() - new Date(Math.min.apply(null, updates))));
     // If time is more than 30 minutes, show hours
     if (seconds > 1800000) {
-      lastUpdate.innerHTML = `Sist oppdatert: ${Math.round(seconds / 3600000)} ${seconds / 3600000 > 1 ? "time" : "timer"} siden`;
+      lastUpdate.innerHTML = `Sist oppdatert for ${Math.round(seconds / 3600000)} ${seconds / 3600000 > 1 ? "time" : "timer"} siden`;
     } else {
       lastUpdate.innerHTML = `Oppdatert nå nettopp`;
     }
