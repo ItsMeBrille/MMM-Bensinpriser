@@ -8,7 +8,7 @@ Module.register("MMM-Bensinpriser", {
     },
     numberOfStations: 3, // Number of gas stations to show
     updateInterval: 180, // Update interval in minutes (default 3 hours)
-    fuelTypes: ["95", "D"], // The fuel types you want to display (95, 98, D or FD)
+    fuelTypes: ["95", "D"], // The fuel types you want to display (95, 98, 100, D, FD or EN590)
     decimalSeparator: "." // You can set it to "." or ","
 
   },
