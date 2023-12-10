@@ -144,7 +144,6 @@ Module.register("MMM-Bensinpriser", {
   loadLanguageJSON: function (language) {
     const self = this;
     const file = this.file(`translations/${language}.json`);
-    console.log(file);
     const xhr = new XMLHttpRequest();
     xhr.overrideMimeType("application/json");
     xhr.open("GET", file, true);
