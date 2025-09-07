@@ -1,12 +1,14 @@
 # MMM-Bensinpriser
 MMM-Bensinpriser is a MagicMirror² module that displays fuel prices for your nearest gas stations in Norway.
 
+> [!IMPORTANT]  
+> This project is no longer maintained. The API it depends on no longer works, so the functionality is broken. Feel free to open an issue if you have an idea on how to get it working again.
+
 ![Screenshot](screenshot.png)
 
 ## Installation
 1. Clone the MMM-Bensinpriser repository into the `modules` directory of your MagicMirror²:
-   ```shell
-   cd ~/MagicMirror/modules
+   ```bash
    git clone https://github.com/ItsMeBrille/MMM-Bensinpriser.git
    ```
 
